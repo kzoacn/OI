@@ -1,0 +1,18 @@
+最小二乘法:
+b=\frac{\sum x_iy_i - n xbar ybar }{\sum_i x_i^2 - nxbar^2}
+a=ybar - b xbar
+泰勒展开
+f(x)=\sum_{i=0}^\infy \frac{f^{(i)}(x)(x-a)^i}{i!}
+拉格朗日插值
+P(x) = \sum_i y_i f_i(x)
+f_j(x) = \pi_{i \neq j} \frac{x-x_i}{x_i-x_j}
+拉格朗日乘数
+Max/Min f(x)
+g(x)=0
+
+h(x,t)=f(x)+tg(x)
+/h_x' =  0
+\g(x) = 0
+
+牛顿迭代
+x-=f(x)/f'(x)
