@@ -1,0 +1,16 @@
+Compile:
+#!/bin/sh
+full=$GEDIT_CURRENT_DOCUMENT_NAME
+name=`echo $full | cut -d. -f1`
+g++ $full -o $name -g -Wall
+
+Debug:
+#!/bin/bash
+name=`echo $GEDIT_CURRENT_DOCUMENT_NAME | cut -d. -f1`
+gnome-terminal -x bash -c "gdb ./$name"
+
+Run:
+#!/bin/bash
+name=`echo $GEDIT_CURRENT_DOCUMENT_NAME | cut -d. -f1`
+gnome-terminal -x bash -c "time ./$name;echo 'Press any key to continue'; read"
+
