@@ -65,7 +65,7 @@ void build(){
 	}
 }
 int main(){
-	freopen("bzoj3270.in","r",stdin);
+//	freopen("bzoj3270.in","r",stdin);
 	scanf("%d%d%d%d",&n,&m,&A,&B);
 	for(int i=1;i<=m;i++){
 		int u,v;scanf("%d%d",&u,&v);
