@@ -41,12 +41,17 @@ FILENAME = 's2.in'
 
 import Queue
 
-rng, chk = PRNG(47), Checksum()
+print 'START'
+
+randomseed=input()
+
+rng, chk = PRNG(randomseed), Checksum()
 
 f = open(FILENAME,'w')
 
 f.write( str(TESTS1+TESTS2) + '\n' )
 for i in range (TESTS1):
+    print i
     f.write('\n')
     n=rng.randint(MINN, MAXN)
     if i==0: n=MAXN
@@ -62,7 +67,10 @@ for i in range (TESTS1):
         chk.add(int(x[1]))
     f.write(' '.join(cards) + '\n')
 
+print 'TEST1 done'
+
 for i in range (TESTS2):
+    print i
     f.write('\n')
     n=rng.randint(MINN, MAXN)
     if i==0: n=MAXN
@@ -92,4 +100,7 @@ for i in range (TESTS2):
         chk.add(int(x[1]))
     f.write(' '.join(newcards) + '\n')
 f.close()
+
+print 'TEST2 done'
+
 chk.check(CHKSUM,FILENAME)
