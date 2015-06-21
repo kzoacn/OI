@@ -1,5 +1,5 @@
 @echo off
-set pro=bzoj2165
+set pro=bzoj2194
 :loop
 %pro%_data.exe > %pro%.in
 %pro%.exe <%pro%.in >%pro%.out
