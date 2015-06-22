@@ -118,7 +118,6 @@ inline void solve() {
 }
 
 int main() {
-	//freopen("input.txt", "r", stdin);
 	int t = getnum();
 	while (t--) {
 		solve();

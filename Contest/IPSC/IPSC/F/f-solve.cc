@@ -6,7 +6,6 @@ using namespace std;
 #define MOD 1000000007
 
 int main() {
-freopen("f1.in","r",stdin);
   int T;
   scanf("%d", &T);
   while (T--) {
@@ -36,8 +35,7 @@ freopen("f1.in","r",stdin);
       if (a != b) {
         if (members[t][a].size() < members[t][b].size()) swap(a, b);
 
-        for (int i=0 ; i<members[t][b].size();i++) {
-        	int c=members[t][b][i];
+        for (int c : members[t][b]) {
           pair<int,int> old = make_pair(parent[0][c], parent[1][c]);
           count[old]--;
           if (count[old] == 0) count.erase(old);
@@ -45,8 +43,7 @@ freopen("f1.in","r",stdin);
           members[t][a].push_back(c);
           R += count[make_pair(parent[0][c], parent[1][c])];
         }
-        for (int i=0 ;i< members[t][b].size();i++) {
-        int c=members[t][b][i];
+        for (int c : members[t][b]) {
           count[make_pair(parent[0][c], parent[1][c])]++;
         }
         members[t][b].clear();

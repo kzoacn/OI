@@ -1,6 +1,5 @@
 #include <cstdio>
 #include <vector>
-#include <stack>
 #include <algorithm>
 using namespace std;
 
@@ -78,7 +77,6 @@ void gset(int eventid, int a, int from, int to, int v, int vleft, int vright) {
   gset(eventid, a, from, to, v*2+1, (vleft+vright)/2, vright);
 }
 
-
 void traverse(int v) {
   timeenter[v] = timenow++;
 
@@ -93,38 +91,7 @@ void traverse(int v) {
   timeexit[v] = timenow++;
 }
 
-stack<int>S;
-stack<int>_S;
-int fa[int(1e6+10)],cnt[int(1e6+10)],vis[int(1e6+10)];
-void dfs(int v){
-	S.push(v);
-	while(!S.empty()){
-		int v=S.top();
-		if(vis[v]){
-			S.pop();
-			 timeexit[v] = timenow++;
-			 continue;
-		}vis[v]=1;
-		timeenter[v] = timenow++;
-		  H = max(H, height[v] + 1);
-		  level[height[v]].push_back(v);
-		  if(!children[v].size()){
-			S.pop();
-			 timeexit[v] = timenow++;
-		}
-	  for (int u=0 ;u< children[v].size();u++) {
-		height[children[v][u]] = height[v] + 1;
-		S.push(children[v][u]);
-//		fa[children[v][u]]=v;
-//		cnt[v]++;
-	  }	
-	 
-	  
-	}
-}
-
 int main() {
-	freopen("g2.in","r",stdin);
   int T;
   scanf("%d", &T);
   while (T--) {
@@ -138,7 +105,6 @@ int main() {
     children.clear(); children.resize(N);
     level.clear(); level.resize(N);
     trees.clear();
-    for(int i=0;i<N;i++)vis[i]=0;
     H = H2 = H2L = timenow = 0;
 
     parent[0] = -1;
@@ -148,9 +114,8 @@ int main() {
       children[parent[i]].push_back(i);
     }
 
-    //traverse(0);
-	dfs(0);
-	
+    traverse(0);
+
     H2 = 1;
     while (H2 < H) H2 *= 2, H2L++;
     level.resize(H2);
