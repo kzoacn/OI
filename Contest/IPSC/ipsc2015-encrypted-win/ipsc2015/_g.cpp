@@ -40,7 +40,7 @@ void sol(){
 		int a,l,c;scanf("%d%d%d",&a,&l,&c);
 		if(!c){
 			int an=col[a];
-		//	cerr<<an<<endl;
+			//cerr<<an<<endl;
 			sum=(sum+(long long)i*an)%int(1e9+7);
 		}else{
 			L=l;
@@ -49,8 +49,8 @@ void sol(){
 	}cout<<sum%int(1e9+7)<<endl;
 }
 int main(){
-	freopen("g1.in","r",stdin);
-	freopen("g1.out","w",stdout);
+	freopen("g.in","r",stdin);
+//	freopen("g1.out","w",stdout);
 	int T;cin>>T;
 	while(T--)sol();	
 	return 0;

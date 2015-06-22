@@ -1,94 +1,127 @@
 #include<bits/stdc++.h>
 using namespace std;
-const int maxn=1e6+5;
-int n,m,c;
-struct node{
-	int al,c;
-	void pd();
-	int l,r;
-	node(){al=c=l=r=0;}
-}t[maxn*2];
+const int maxn=1e6+6;
 int tot=0;
-void node::pd(){
-	if(al==0)return;
-	t[l].c=t[l].al=al;
-	t[r].c=t[r].al=al;
-	al=0;
-}
-int lef[maxn],rig[maxn],fa[maxn];
-vector<int>G[maxn];
-void dfs(int u){
-	lef[u]=++tot;
-	for(int i=0;i<G[u].size();i++){
-		int v=G[u][i];
-		dfs(v);
-	}rig[u]=tot;
-}
-int build(int l,int r){
-	int x=++tot;
-	t[x]=node();
-	if(l==r){
-		t[x].c=1;
+struct sgtnode{
+	int id;
+	int l,r;	
+}tr[39673320];
+struct sgt{
+	int rt,n;
+	int build(int l,int r){
+		int x=++tot;
+		tr[x].id=0;tr[x].l=tr[x].r=0;
+		if(l==r)return x;
+		int mid=(l+r)/2;
+		tr[x].l=build(l,mid);
+		tr[x].r=build(mid+1,r);
 		return x;
 	}
-	t[x].l=build(l,(l+r)/2);
-	t[x].r=build(1+(l+r)/2,r);
+	void build(int _n){
+		n=_n;
+		rt=build(1,n);
+	}
+	int Qmax(int x,int l,int r,int ps){
+		if(l==r)return tr[x].id;
+		int mid=(l+r)/2;
+		if(ps<=mid)return max(Qmax(tr[x].l,l,mid,ps),tr[x].id);
+		else return max(Qmax(tr[x].r,mid+1,r,ps),tr[x].id);
+	}
+	void C(int x,int l,int r,int l0,int r0,int id){		
+		if(l0<=l&&r0>=r)return void(tr[x].id=id);
+		int mid=(l+r)/2;
+		if(l0<=mid)C(tr[x].l,l,mid,l0,r0,id);
+		if(r0>mid)C(tr[x].r,mid+1,r,l0,r0,id);
+	}
+	int Qmax(int ps){return Qmax(rt,1,n,ps);}
+	void C(int l0,int r0,int id){C(rt,1,n,l0,r0,id);}
+};
+int n,m,c;
+vector<int>G[maxn];
+int dep[maxn],timc[maxn]={1},fa[maxn],lef[maxn],rig[maxn],tmz;
+vector<int>deps[maxn];
+vector<int>tmp;
+void dfs(int u){
+	lef[u]=++tmz;
+	deps[dep[u]].push_back(lef[u]);
+	for(int i=0;i<G[u].size();i++){
+		int v=G[u][i];
+		dep[v]=dep[u]+1;
+		dfs(v);
+	}rig[u]=tmz;
+}
+int z;
+struct node{
+	sgt T;
+	vector<int>v;
+	int l,r;
+}t[maxn*2];
+int build(int l,int r){
+	int x=++z;
+	for(int i=l;i<=r;i++)
+		tmp.insert(tmp.end(),deps[i].begin(),deps[i].end());
+	t[x].T.build(tmp.size());
+	sort(tmp.begin(),tmp.end());
+	t[x].v=tmp;
+	tmp.clear();
+	if(l==r)return x;
+	int mid=(l+r)/2;
+	t[x].l=build(l,mid);
+	t[x].r=build(mid+1,r);
 	return x;
 }
-int Q(int i,int l,int r,int ps){
-	if(l==r)return t[i].c;
-	t[i].pd();
-	if(ps<=(l+r)/2)return Q(t[i].l,l,(l+r)/2,ps);
-	else return Q(t[i].r,(l+r)/2+1,r,ps);
-}
-void C(int i,int l,int r,int l0,int r0,int c){
+void C(int x,int l,int r,int a,int l0,int r0,int id){
 	if(l0<=l&&r0>=r){
-		t[i].al=t[i].c=c;
+		int L=lower_bound(t[x].v.begin(),t[x].v.end(),lef[a])-t[x].v.begin()+1;
+		int R=upper_bound(t[x].v.begin(),t[x].v.end(),rig[a])-t[x].v.begin();
+		if(L<=R)
+		t[x].T.C(L,R,id);
 		return;
-	}t[i].pd();
+	}
 	int mid=(l+r)/2;
-	if(l0<=mid)C(t[i].l,l,mid,l0,r0,c);
-	if(r0>mid)C(t[i].r,mid+1,r,l0,r0,c);
-	return;
+	if(l0<=mid)C(t[x].l,l,mid,a,l0,r0,id);
+	if(r0>mid)C(t[x].r,mid+1,r,a,l0,r0,id);
+}
+int Qmax(int x,int l,int r,int a){	
+	int ps=lower_bound(t[x].v.begin(),t[x].v.end(),lef[a])-t[x].v.begin()+1;
+	int ans=0;
+	ans=t[x].T.Qmax(ps);
+	if(l==r)return ans;
+	int mid=(l+r)>>1;
+	if(dep[a]<=mid)ans=max(ans,Qmax(t[x].l,l,mid,a));
+	else ans=max(ans,Qmax(t[x].r,mid+1,r,a));
+	return ans;
 }
 void sol(){
 	scanf("%d%d%d",&n,&c,&m);
 	for(int i=1;i<=n;i++)G[i].clear();
 	for(int i=2;i<=n;i++){
-		int u;scanf("%d",&u);
-		fa[i]=u;G[u].push_back(i);
-	}
-	tot=0;
+		scanf("%d",&fa[i]);
+		G[fa[i]].push_back(i);
+	}dep[1]=1;tot=0;z=0;tmz=0;
 	dfs(1);
-	tot=0;
-	build(1,n);
+	int H=*max_element(dep+1,dep+1+n);
+	build(1,H);
+	//cerr<<tot<<endl;
+	for(int i=1;i<=H;i++)deps[i].clear();
 	long long sum=0;
 	for(int i=1;i<=m;i++){
 		int a,l,c;scanf("%d%d%d",&a,&l,&c);
 		if(!c){
-			int an=Q(1,1,n,lef[a]);
-		//	cerr<<an<<endl;
-			sum=(sum+(long long)i*an)%int(1e9+7);
+			int ans=timc[Qmax(1,1,H,a)];
+			//cerr<<ans<<endl;
+			sum+=(long long)i*ans;
+			sum%=int(1e9+7);
 		}else{
-			if(l==0){
-				C(1,1,n,lef[a],lef[a],c);
-			}else
-			if(l==1){
-				C(1,1,n,lef[a],lef[a],c);
-				for(int i=0;i<G[a].size();i++){
-					int v=G[a][i];
-					C(1,1,n,lef[v],lef[v],c);
-				}
-			}else{
-				C(1,1,n,lef[a],rig[a],c);
-			}
+			timc[i]=c;
+			int l0=dep[a],r0=min(H,dep[a]+l);
+			C(1,1,H,a,l0,r0,i);
 		}
-	}cout<<sum%int(1e9+7)<<endl;
+	}cout<<sum<<endl;
 }
 int main(){
-//	freopen("g1.in","r",stdin);
-//	freopen("g1.out","w",stdout);
-	int T;cin>>T;
-	while(T--)sol();	
+//	freopen("g.in","r",stdin);
+	int T;scanf("%d",&T);
+	while(T--)sol();
 	return 0;
 }
