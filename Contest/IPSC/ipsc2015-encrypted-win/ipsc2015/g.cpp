@@ -1,11 +1,11 @@
 #include<bits/stdc++.h>
 using namespace std;
-const int maxn=1e6+6;
+const int maxn=1e5+6;
 int tot=0;
 struct sgtnode{
 	int id;
 	int l,r;	
-}tr[39673320];
+}tr[3967332];
 struct sgt{
 	int rt,n;
 	int build(int l,int r){
