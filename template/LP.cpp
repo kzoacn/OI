@@ -24,7 +24,7 @@ double simplex(){
 		int l=1,e=1;
 		for(int i=1;i<=n;i++)if(a[0][i]>a[0][e])e=i;
 		if(dcmp(a[0][e])<=0)return -a[0][0];
-		for(int i=1;i<=m;i++)if(dcmp(a[i][e])>0&&a[i][0]*a[l][e]<a[l][0]*a[i][e])l=i;
+		for(int i=1;i<=m;i++)if(dcmp(a[i][e])>0&&(a[l][e]<=0||a[i][0]*a[l][e]<a[l][0]*a[i][e]))l=i;
 		if(dcmp(a[l][e])<=0){puts("-1");exit(0);}
 		pivot(l,e);		
 	}
