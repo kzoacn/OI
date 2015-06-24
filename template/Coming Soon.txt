@@ -1,24 +1,7 @@
-new fhqTreap
-lca
-Trie
 可持久化Trie
 主席树
-匈牙利
-dijk
-spfa
-mst
 数值算法:牛顿迭代、搞死小圆、simpson、拉格朗日插值、泰勒展开、最小二乘法
-SAM
-计算几何
-DLX
-矩乘
-替罪羊
-莫队
+#矩乘
 树上莫队
-FFT
-线性基
-斯坦纳树
-旋转卡壳
-线性基
-斜堆/左偏树
 虚树
+kdtree

@@ -1,0 +1,30 @@
+Splay/fhqTreap BZOJ1500
+SGT 1858
+MST/LCA 1977
+ACAM 2434
+SA/SAM 3172
+LCT 2594
+Treap 3196
+主席树 1901
+kdtree 3053
+可持久化trie 4103
+斜堆 1455
+树上莫队 3052
+点分治 1468
+
+分治 1492
+Dinic 1066
+Gauss 1923 3143 4031
+KMP 3670
+tarjanSCC 1179
+矩乘 3231
+Costflow 3171
+线性规划 3935
+manacher 3790
+minexpress 1398
+插头dp 1187
+匈牙利 1191
+线性基 2115
+虚树 2812
+数论 2219,2154
+hash 2351

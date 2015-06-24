@@ -119,41 +119,12 @@ def rand(N, Q):
 
 
 def hard():
-    print(28)
-
-    make(4,  random.randint(0,5), RC=random.randint(0,1), F=random.randint(0,1), RS=random.randint(0,1), RP=1)
-    make(10, random.randint(0,5), RC=random.randint(0,1), F=random.randint(0,1), RS=random.randint(0,1), RP=1)
-    make(16, random.randint(0,5), RC=random.randint(0,1), F=random.randint(0,1), RS=random.randint(0,1), RP=1)
-    make(20, random.randint(0,5), RC=random.randint(0,1), F=random.randint(0,1), RS=random.randint(0,1), RP=1)
-    make(30, random.randint(0,5), RC=random.randint(0,1), F=random.randint(0,1), RS=random.randint(0,1), RP=1)
-    rand(2,  1  )
-    rand(2,  7  )
-    rand(20, 1  )
-    rand(20, 2  )
-    rand(20, 20 )
-    rand(22, 50 )
-    rand(23, 150)
-    rand(28, 250)
-    rand(21, 500)
-
-    make(10104, 613,        F=1, RS=1, RF=1, RP=1)
-    make(4140,  1425, RC=1,            RF=1, RP=1)
-    make(4846,  1326, RC=1,                  RP=1)
-    make(3297,  627,             RS=1, RF=1,     )
-    make(4060,  789,  RC=1, F=1, RS=1,       RP=1)
-    make(6452,  1291,       F=1, RS=1,       RP=1)
-    rand(5724, 7145)
-    rand(46439, 167)
-
-    make(31200,  100,    RC=1, F=1, RS=1, RF=1, RP=1)
-    make(1000,   11000,  RC=1,      RS=1, RF=1, RP=1)
-    make(50000,  50000,  RC=1, F=1, RS=1, RF=1, RP=1)
-    make(300000, 100000, RC=1, F=1, RS=1, RF=1, RP=1)
-    make(660000, 10,     RC=1,      RS=1, RF=1, RP=1)
-    rand(1000000, 1000000)
+    print(1)
+#    make(100000, 100000, RC=1, F=1, RS=1, RF=1, RP=1)
+    make(100000, 100000,     RC=1,      RS=1, RF=1, RP=1)
+#    rand(1000000, 1000000)
 
 if __name__ == '__main__':
     sys.stdout = f = open(FILENAME, 'w')
     hard()
     f.close()
-    chk.check(CHKSUM, FILENAME)
