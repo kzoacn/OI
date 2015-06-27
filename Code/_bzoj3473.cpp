@@ -1,112 +1,168 @@
-#include<cstdio>
-#include<cstring>
-#include<cctype>
-#include<iostream>
-#include<algorithm>
-using namespace std;
-  
-#define N 100010
-  
-int tranc[N<<1][26],len[N<<1],pa[N<<1],cnt,root,last;
-inline int newnode(int l){len[++cnt]=l;return cnt;}
-  
-struct Graph{
-    int head[N<<1],next[N<<1],end[N<<1],ind;
-    inline void addedge(int a,int b){int q=++ind;end[q]=b,next[q]=head[a],head[a]=q;}
-}w,g,sav;
-  
-char s[N];
-  
-int seq[N<<1],in[N<<1],out[N<<1],tclock;
-inline void dfs(int x){
-    in[x]=++tclock,seq[tclock]=x;
-    for(int j=g.head[x];j;j=g.next[j])dfs(g.end[j]);
-    out[x]=tclock;
+#include <cstdio>
+#include <cstring>
+#include <algorithm>
+
+const int MaxN = 200010, MaxAlpha = 26;
+struct node_t
+{
+	int len, w;
+	node_t *fa, *ch[MaxAlpha];
+} node[MaxN];
+char str[MaxN];
+int used = 1, dfn_index;
+node_t *sam_head = node + used++;
+int enter[MaxN], leave[MaxN], cnt[MaxN], dfn[MaxN];
+
+node_t* sam_extend(node_t *tail, int x)
+{
+	node_t *n = tail->ch[x];
+	if(n)
+	{
+		if(tail->len + 1 == n->len)
+			return n;
+		node_t *r = node + used++;
+		*r = *n; n->fa = r;
+		r->len = tail->len + 1;
+		for(node_t *p = tail; p && p->ch[x] == n; p = p->fa)
+			p->ch[x] = r;
+		return r;
+	} else {
+		node_t *p = tail, *n = node + used++;
+		n->len = p->len + 1;
+		for(; p && !p->ch[x]; p = p->fa)
+			p->ch[x] = n;
+		if(!p)
+		{
+			n->fa = sam_head;
+		} else {
+			if(p->len + 1 == p->ch[x]->len)
+			{
+				n->fa = p->ch[x];
+			} else {
+				node_t *q = p->ch[x], *r = node + used++;
+				*r = *q; r->len = p->len + 1;
+				q->fa = n->fa = r;
+				for(; p && p->ch[x] == q; p = p->fa)
+					p->ch[x] = r;
+			}
+		}
+
+		return n;
+	}
+
+	return 0;
 }
-  
-struct Ask{
-    int lab,l,r;
-    Ask(){}
-    Ask(int _lab,int _l,int _r):lab(_lab),l(_l),r(_r){}
-    bool operator<(const Ask&B)const{return r<B.r;}
-}S[N<<1];
-  
-int ans[N<<1],lastins[N];
-  
-int A[N<<1];
-inline void mdf(int x,int add){
-    for(;x<=cnt;x+=x&-x)A[x]+=add;
+
+struct ques_t
+{
+	int id;
+	bool operator < (const ques_t& q) const
+	{
+		return leave[id] < leave[q.id];
+	}
+} ques[MaxN];
+
+struct graph_t
+{
+	int total;
+	int head[MaxN], point[MaxN << 1], next[MaxN << 1];
+
+	void add_edge(int u, int v)
+	{
+		point[++total] = v;
+		next[total] = head[u];
+		head[u] = total;
+	}
+} s, g, gp;
+
+struct tree_array
+{
+	int size, ta[MaxN];
+
+	void modify(int x, int v)
+	{
+		for(; x <= size; x += x & -x)
+			ta[x] += v;
+	}
+
+	int ask(int x)
+	{
+		int v = 0;
+		if(!x) return v;
+		for(; x; x -= x & -x)
+			v += ta[x];
+		return v;
+	}
+} ta;
+
+void dfs(int u)
+{
+	dfn[++dfn_index] = u;
+	enter[u] = dfn_index;
+	for(int k = gp.head[u]; k; k = gp.next[k])
+		dfs(gp.point[k]);
+	leave[u] = dfn_index;
 }
-inline int ask(int x){
-    int r=0;for(;x;x-=x&-x)r+=A[x];return r;
+
+void dfs2(int u)
+{
+	if(node[u].fa) node[u].w += node[u].fa->w;
+	for(int k = gp.head[u]; k; k = gp.next[k])
+		dfs2(gp.point[k]);
 }
-  
-int v[N<<1];
-  
-void dfs2(int x){
-    v[x]+=v[pa[x]];
-    for(int j=g.head[x];j;j=g.next[j])dfs2(g.end[j]);
-}
-  
-void get(int x){
-    for(int j=w.head[x];j;j=w.next[j])printf("%d ",w.end[j]);puts("");
-}
-  
-int main(){
-    int n,lim;scanf("%d%d",&n,&lim);
-      
-    register int i,j,k;int y;int p,np,q,nq,rep,tmp;
-    for(root=newnode(0),i=1;i<=n;++i){
-        scanf("%s",s);int l=strlen(s);
-        for(last=root,j=l-1;j>=0;--j){
-            if((p=tranc[last][y=s[j]-'a'])!=0){
-                if(len[p]==len[last]+1)last=p;
-                else{
-                    rep=newnode(len[last]+1);pa[rep]=pa[p],pa[p]=rep;
-                    memcpy(tranc[rep],tranc[p],sizeof tranc[p]);
-                    for(tmp=last;tmp&&tranc[tmp][y]==p;tmp=pa[tmp])tranc[tmp][y]=rep;
-                    last=rep;
-                }
-            }
-            else{
-                np=newnode(len[last]+1);
-                for(p=last;p&&!tranc[p][y];p=pa[p])tranc[p][y]=np;
-                if(!p)pa[np]=root;
-                else{
-                    q=tranc[p][y];
-                    if(len[q]==len[p]+1)pa[np]=q;
-                    else{
-                        nq=newnode(len[p]+1),pa[nq]=pa[q],pa[np]=pa[q]=nq;
-                        memcpy(tranc[nq],tranc[q],sizeof tranc[q]);
-                        for(;p&&tranc[p][y]==q;p=pa[p])tranc[p][y]=nq;
-                    }
-                }last=np;
-            }
-            w.addedge(last,i);
-            sav.addedge(i,last);
-        }
-    }
-      
-    for(i=1;i<=cnt;++i)if(pa[i])g.addedge(pa[i],i);
-    dfs(1);
-      
-    for(i=1;i<=cnt;++i)S[i]=Ask(i,in[i],out[i]);sort(S+1,S+cnt+1);
-    for(k=i=1;i<=cnt;++i){
-        for(j=w.head[seq[i]];j;j=w.next[j]){
-            if(lastins[w.end[j]])mdf(lastins[w.end[j]],-1);mdf(lastins[w.end[j]]=i,1);
-        }
-        for(;S[k].r==i;++k)ans[S[k].lab]=ask(S[k].r)-ask(S[k].l-1);
-    }
-      
-    for(i=1;i<=cnt;++i)v[i]=ans[i]>=lim?len[i]-len[pa[i]]:0;
-      
-    dfs2(1);
-      
-    long long nowans;
-    for(i=1;i<=n;++i){
-        if(i>1)putchar(' ');
-        for(nowans=0,j=sav.head[i];j;j=sav.next[j])nowans+=v[sav.end[j]];
-        printf("%lld",nowans);
-    }puts("");
-    return 0;
+
+int main()
+{
+	freopen("bzoj3473.in","r",stdin);
+	int n, times;
+	std::scanf("%d %d", &n, &times);
+	for(int i = 1; i <= n; ++i)
+	{
+		node_t *now = sam_head;
+		std::scanf("%s", str);
+		int len = std::strlen(str);
+		for(int j = len - 1; j >= 0; --j)
+		{
+			now = sam_extend(now, str[j] - 'a');
+			s.add_edge(now - node, i);
+			g.add_edge(i, now - node);
+		}
+	}
+
+	for(int i = 2; i != used; ++i)
+		gp.add_edge(node[i].fa - node, i);
+	dfs(1);
+
+	for(int i = 1; i != used; ++i)
+		ques[i].id = i;
+	ta.size = used;
+	std::sort(ques + 1, ques + used);
+	for(int i = 1, q = 1; i != used; ++i)
+	{
+		for(int k = s.head[dfn[i]]; k; k = s.next[k])
+		{
+			int v = s.point[k];
+			if(cnt[v]) ta.modify(cnt[v], -1);
+			ta.modify(cnt[v] = i, 1);
+		}
+
+		for(; q != used && leave[ques[q].id] == i; ++q)
+		{
+			int id = ques[q].id;
+			node_t *n = node + id;
+			int v = ta.ask(leave[id]) - ta.ask(enter[id] - 1);
+			if(n->fa) n->w = (v >= times) ? n->len - n->fa->len : 0;
+			else n->w = 0;
+		}
+	}
+
+	dfs2(1);
+	for(int i = 1; i <= n; ++i)
+	{
+		long long ans = 0;
+		for(int k = g.head[i]; k; k = g.next[k])
+			ans += node[g.point[k]].w;
+		std::printf("%lld%c", ans," \n"[i==n]);
+	}
+	return 0;
 }
