@@ -57,27 +57,4 @@ struct LCT{
     }
     void link(int x,int y){link(nd+x,nd+y);}
     void cut(int x,int y){cut(nd+x,nd+y);}
-    int Qmax(int u,int v){
-        node *x=nd+u,*y=nd+v;
-        if(!Con(u,v))return -1;
-        makert(x);
-        access(y);
-        splay(y);
-        return y->mx;
-    }
-    void C(int a,int b){
-        node *x=nd+a;
-        makert(x);
-        splay(x);
-        x->val=b;
-        x->rz();
-    }
-    bool Con(int u,int v){
-        node *x=nd+u,*y=nd+v;
-        makert(x);
-        access(y);
-        splay(y);
-        while(!x->rt())x=x->f;
-        return x==y;
-    }
 }T;
