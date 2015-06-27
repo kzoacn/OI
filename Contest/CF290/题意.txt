@@ -1,0 +1,17 @@
+【Codeforces Round #290 (Div. 1)】
+白天会考晚上cf……vp到一半cf还炸了……
+【A. Fox And Names】
+题意:给定一个字符串序列,对字母表重新排序,使得序列是成字典序排列的
+sol:差分约束然后sort,一直wa on test 13的同学可以试一试这个数据
+2
+ab
+a
+【B. Fox And Jumping】
+题意:给定序列l,c,选择l_i的代价是c_i,选择一个子集使得l的gcd为1且代价最小
+sol:dp[i][j]表示前i个数gcd为j的最小代价,转移显然,由于j最多nsqrt(w)种所以可以hash,或者干脆来个map
+【C. Fox And Dinner】
+题意:给定一张二分图,将它分解为多个环
+sol:网络流,每个点的流量为2
+【D. Fox And Travelling】
+题意:给定一张图,一个点可以被访问当且仅当他的邻居种至多有一个未访问且他没有被访问,求走0..n次的方案数
+sol:好麻烦……明天还要会考先不写了
