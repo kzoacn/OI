@@ -57,7 +57,14 @@ namespace LCT{
         access(x)->makerv();
         splay(x);
     }
+    void Add(node *x,node *y,int d){
+		makert(x);access(y);
+		splay(y);
+		y->laz+=d;y->val+=d;y->pd();
+	}
+    void Add(int x,int y,int d){Add(nd+x,nd+y,d);}
     void link(node *x,node *y){
+    	Add(nd+1,y,x->val);
         makert(x);
         x->f=y;
         access(x);
@@ -67,13 +74,9 @@ namespace LCT{
     	if(x==nd||y==nd)return;
         makert(x);access(y);splay(y);
         y->c[0]=x->f=0;
+  		Add(nd+1,y,-x->val);
         y->rz();
     }
-    void Add(node *x,node *y,int d){
-		makert(x);access(y);
-		splay(y);
-		y->laz+=d;y->val+=d;y->pd();
-	}
 	int Qsum(node *x){
 		makert(x);splay(x);return x->val;
 	}
@@ -87,66 +90,63 @@ namespace LCT{
 	void makert(int x){makert(nd+x);}
     void link(int x,int y){link(nd+x,nd+y);}
     void cut(int x,int y){cut(nd+x,nd+y);}
-    void Add(int x,int y,int d){Add(nd+x,nd+y,d);}
 	int Qsum(int x){return Qsum(nd+x);}
 	int fa(int x){return fa(nd+x)-nd;}
 }
 void add(int w){
     int p=last;
-    int np=newnode(len[p]+1);
-    LCT::makert(root);
-    while(p&&!son[p][w])son[p][w]=np,p=LCT::fa(p);
-    if(!p)LCT::link(np,root);//fa[np]=1;
+    int np=newnode(len[p]+1);LCT::nd[np].val=1;
+    while(p&&!son[p][w])son[p][w]=np,p=fa[p];
+    if(!p)fa[np]=1,LCT::link(np,1);
     else{
         int q=son[p][w];
-        if(len[p]+1==len[q])LCT::link(np,q);//fa[np]=q;
+        if(len[p]+1==len[q])fa[np]=q,LCT::link(np,q);
         else{
             int nq=newnode(len[p]+1);
             memcpy(son[nq],son[q],sizeof son[nq]);
-            LCT::link(nq,LCT::fa(q));
-			//fa[nq]=fa[q];
-			
-			LCT::cut(q,LCT::fa(q));
-			LCT::makert(root);
-			LCT::cut(np,LCT::fa(np));
-			LCT::makert(root);
-			
+            LCT::cut(nq,fa[nq]);
+            LCT::link(nq,fa[q]);
+			fa[nq]=fa[q];
+			LCT::cut(q,fa[q]);
+			LCT::cut(np,fa[np]);
 			LCT::link(q,nq);
 			LCT::link(np,nq);
-			//fa[q]=fa[np]=nq;
-            while(p&&son[p][w]==q)son[p][w]=nq,p=LCT::fa(p);
+			fa[q]=fa[np]=nq;
+            while(p&&son[p][w]==q)son[p][w]=nq,p=fa[p];
         }
     }
-	LCT::Add(1,np,1);
 	last=np;
 }
 int mask,Q;
 char s[maxn];
-void decode(char *s,int n){
+void decode(char *s,int n,int mask){
 	for(int i=0;i<n;i++){
 		mask=(mask*131+i)%n;
 		swap(s[i],s[mask]);
 	}
 }
 int main(){
+	freopen("bzoj2555.in","r",stdin);
 	scanf("%d",&Q);
 	scanf("%s",s);int n=strlen(s);
 	for(int i=0;i<n;i++)
-		add(s[i]-'a');
+		add(s[i]-'A');
 	while(Q--){
 		char op[5];scanf("%s",op);
 		if(op[0]=='A'){
 			scanf("%s",s);n=strlen(s);
-			decode(s,n);
+			decode(s,n,mask);
 			for(int i=0;i<n;i++)
-				add(s[i]-'a');
+				add(s[i]-'A');
 		}else{
 			scanf("%s",s);n=strlen(s);
-			decode(s,n);
+			decode(s,n,mask);
 			int u=1;
 			for(int i=0;i<n;i++)
-				u=son[u][s[i]-'a'];
-			printf("%d\n",LCT::Qsum(u));
+				u=son[u][s[i]-'A'];
+			int res=LCT::Qsum(u);
+			mask^=res;
+			printf("%d\n",res);
 		}
 	}
     return 0;
