@@ -1,0 +1,11 @@
+【Codeforces Round #286 (Div. 1)】
+一场sxbk的round……只有ABD能做……
+【A. Mr. Kitayuta, the Treasure Hunter】
+题意:一个数轴上有n点带权,给定初始位置,设上次跳的长度为l,每次可以往后跳l-1,l,l+1,求最大价值
+sol:f[i][j]表示到达i上一次跳长度为j所能获得的最大价值,j的取值只有sqrt(n)中
+【B. Mr. Kitayuta's Technology】
+题意:构造一个有向图,使得给定的点对(u,v)可以从u到v
+sol:显然我们可以构造一个环直接满足所有点对,而且原图中无关的两组可以被分成两个,若不形成环则ans--
+【D. Mr. Kitayuta's Colorful Graph】
+题意:给定一个无向图,边带颜色,每次询问两点直接有多少种颜色可以使得他们联通
+sol:设某颜色有K条边,那么有O(k)个点相关,O(k^2)个询问,所以复杂度为\(sum_imin(k_i^2,q)\),满足约束\(\sum_i k_i =O(q)\),你会发现复杂的最多为\(m\sqrt m\)
