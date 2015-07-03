@@ -1,4 +1,5 @@
-max' ()
+max' [x] = x
 max' (x:xs)
-	| length xs == 0 = x
-	|  otherwise =max x max'(xs)
+	| x> maxTail = x
+	| otherwise =maxTail
+	where maxTail = max' xs
