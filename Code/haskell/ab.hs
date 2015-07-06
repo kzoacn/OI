@@ -1,5 +1,3 @@
-max' [x] = x
-max' (x:xs)
-	| x> maxTail = x
-	| otherwise =maxTail
-	where maxTail = max' xs
+main = do
+    x<- getLine
+    putStrLn x
