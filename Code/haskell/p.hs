@@ -1,5 +1,8 @@
-prime = findp [2..]
-	where findp(p:xs)=p:findp [x|x<-xs , x `mod` p /=0]
+primes :: [Integer]
+primes = 2: 3: sieve (tail primes) [5,7..]
+ where 
+  sieve (p:ps) xs = h ++ sieve ps [x | x <- t, x `rem` p /= 0]  
+                                -- or:  filter ((/=0).(`rem`p)) t
+                  where (h,~(_:t)) = span (< p*p) xs
 main = do
-	n<-getLine
-	print $ prime !! (read n)
+	print $  primes !! (400000)
