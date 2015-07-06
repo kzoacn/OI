@@ -1,0 +1,14 @@
+【Codeforces Round #200 (Div. 1)】
+做水Round涨自信
+【A. Rational Resistance】
+题意:用最少的1欧的电阻凑出a/b欧
+sol:额……推一推是一个和gcd类似的东西……
+【B. Alternating Current】
+题意:两个绳子缠了起来,给出交点处谁在上面,问是否缠上了
+sol:好奇怪的题……用栈维护一下……
+【C. Read Time】
+题意:给定一个无限长的纸带,有n个读写头可以同时移动,现在你要访问m个位置,问最少时间
+sol:二分check,考虑使用每个读写头尝试覆盖最前面没有被覆盖的然后贪心向后推
+【D. Water Tree】
+题意:设计数据结构支持:1子树set1,2点到根set0,3询问某点颜色
+sol:nlog^2n树剖裸题,标算是nlogn的,也很简单懒得写了
