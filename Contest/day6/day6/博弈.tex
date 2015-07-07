@@ -1,0 +1,71 @@
+\documentclass[CJK]{beamer}
+\usepackage[slantfont, boldfont]{xeCJK}
+\usepackage{ulem}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{colortbl}
+\setCJKmainfont{SimSun}
+\setCJKmonofont{SimSun}
+\usetheme{PaloAlto}
+\usecolortheme{rose}
+\usefonttheme{professionalfonts}
+\usepackage{CJK}
+\usepackage{amsfonts}
+\setlength{\parskip}{0.5\baselineskip}
+\setlength{\parindent}{1em}
+
+\begin{document}
+\title{傻逼博弈杂讲}
+\institute{ydc}
+\date{\today}
+\begin{frame}
+\titlepage
+\end{frame}
+\begin{frame}
+\frametitle{白书例题}
+一个$1 \times n$的棋盘，有$X$和$.$，当棋盘上出现三个连续的$X$时游戏结束，两人轮流操作，每次能把一个$.$变成$X$，问先手必胜方案数
+
+$n \le 1000$
+\end{frame}
+\begin{frame}
+\frametitle{Codeforces 305E Playing with String}
+刚开始你只有一个字符串
+
+每次能选择一个有的字符串$s$，找到$i$，满足$s[i-1]=s[i+1]$，将其分裂成$3$个字符串$s[1 \cdots i-1],s[i],s[i+1 \cdots |s|]$
+
+不能操作者负，求先手必胜的一个策略
+
+初始字符串长度不超过$5000$
+\end{frame}
+\begin{frame}
+\frametitle{HNOI 江南乐}
+$n$堆石子，给定一个$F$，每次你能选择一个石子数大于等于$F$的石子堆，选择一个$m$，将其分成$m$堆，要求最大的一堆的个数和最小的一堆的个数差不能超过$1$，问先手是否必胜
+
+每堆石子数不超过$100000$
+\end{frame}
+\begin{frame}
+\frametitle{Codeforces 138D World of Darkraft}
+有一个$n \times m$的棋盘，每个点上标记了$L,R,X$中的一个
+
+每次能选择一个没有被攻击过的点$(i,j)$，从这个点开始发射线，射线形状为：
+
+\begin{enumerate}
+\item 若字符是$L$，向左下角和右上角发，遇到被攻击过的点就停下来
+\item 若字符是$R$，向左上角和右下角发，遇到被攻击过的点就停下来
+\item 若字符是$X$，向左小左上右下右上发，遇到被攻击过的点停下来
+\end{enumerate}
+
+问先手是否必胜，$n,m \le 20$
+\end{frame}
+\begin{frame}
+\frametitle{HNOI 分裂游戏}
+有$n$个瓶子，第$i$个瓶子里有$a_i$个豆子，每次能选择$i,j,k$，要求$i<j \le k$，第$i$个瓶子至少有一个豆子，随后从$i$里取出一个豆子，往$j,k$里各放入一个豆子（允许$j=k$），无法操作者输，问先手取胜策略数
+
+$n \le 21,p_i \le 10000$
+\end{frame}
+\begin{frame}
+\frametitle{POI 石子游戏}
+有$n$堆石子，第$i$堆石子数大于等于第$i-1$堆，每次你能选择一堆石子移走拿走若干石子，但是要求拿走后仍然满足单调不降性质，问先手是否必胜
+\end{frame}
+\end{document}

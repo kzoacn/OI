@@ -1,0 +1,149 @@
+\documentclass{ctexart}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{ifthen}
+\usepackage{syntonly}
+\usepackage[colorlinks, CJKbookmarks=true, linkcolor=red]{hyperref}
+\pagestyle{fancy}
+\begin{document}
+\title{day2}
+\author{ydc}
+\date{\today}
+\maketitle
+\section{矩形}
+\subsection{题目描述}
+给你一个$n \times n$的黑白矩形，定义美丽矩形为大小至少为$2$的全黑矩形，问有多少不相交的美丽矩形对。
+
+\includegraphics{sample.png}
+
+对于这幅图，左边两个都不是美丽矩形，右边则全是的。
+\subsection{输入}
+从rect.in输入
+
+第一行一个整数$n$，接下来$n$行每行一个长度为$n$的字符串，每个字符要么是$B$表示白色，要么是$C$表示黑色
+\subsection{输出}
+输出到rect.out
+
+输出题目要求的数
+\subsection{样例输入}
+\begin{verbatim}
+样例一：
+3
+CCB
+CCB
+CBB
+样例二：
+5 	 
+BCCBB 	 
+BBCBB 	 
+BCCBB 	 
+BBBBB 	 
+CCBBB
+\end{verbatim}
+\subsection{样例输出}
+\begin{verbatim}
+样例一：
+5
+样例二：
+8
+\end{verbatim}
+\subsection{数据范围}
+对于$10\%$的数据，$n \le 10$
+
+对于$40\%$的数据，$n \le 100$
+
+对于$60\%$的数据，$n \le 300$
+
+对于$100\%$的数据，$n \le 1000$
+\subsection{时空限制}
+时间限制：$1s$
+
+空间限制：$256MB$
+\section{串}
+\subsection{题目描述}
+我们称两个长度为$n$的$01$字符串$A,B$等价，有四种情况：A,B相等；A进行$01$反转后和$B$相等；$A$翻转后和$B$相等，$A$翻转且反转后和$B$相等。
+
+输入$n,k$，求字典序第$k$小的$n$位$01$字符串，满足没有比他字典序小且和他等价的串
+\subsection{输入}
+从str.in输入
+
+只有两个数$n,k$
+\subsection{输出}
+输出一个$01$字符串。如果合法串不到$k$个，输出$-1$
+\subsection{样例输入}
+\begin{verbatim}
+4 4
+\end{verbatim}
+\subsection{样例输出}
+\begin{verbatim}
+0101
+\end{verbatim}
+\subsection{数据范围}
+对于$40\%$的数据，$n \le 18$
+
+对于$100\%$的数据，$n \le 50,k \le 10^{16}$
+\subsection{时空限制}
+时间限制：$5s$
+
+空间限制：$64MB$
+\section{树}
+\subsection{题目描述}
+给出一棵$n$个点的树，每个点有两层，每层有权值和颜色（黑白）。要求支持以下操作。 
+\begin{enumerate}
+\item Cover s t color，将s到t的路径上的点的两层的颜色全部置为color(0白1黑)
+\item CVal index layer val 将index号点的layer层的权值修改为val
+\item CColor index layer color 将index号点的layer层的颜色修改为color
+\item QMax s t 询问s到t的路径上的白色最大权值和路径的权值（任意白色层为起点，每次只能往相同点不同层或者相邻点同一层上移动，每个点的每一层最多走一次，路径经过的层必须都是白色） ，若s到t上的路径没有白点则输出"Bad Request."
+\item QLen s t 询问s到t的路径上的白色最大权值和路径的最大长度，若s到t的路径上没有白点则输出0
+\end{enumerate}
+
+初始树上权值均为 1，颜色均为白色。
+\subsection{输入}
+从tree.in输入
+
+第一行一个整数$n$表示树的点数
+
+接下来$n-1$行每行两个数$s,t$表示$s,t$有边相连
+
+接下来一行一个数$Q$表示操作数
+
+接下来$Q$行表示一个操作
+\subsection{输出}
+输出到tree.out
+
+对于每个Qmax QLen输出一行表示答案
+\subsection{样例输入}
+\begin{verbatim}
+6
+1 2
+2 4
+2 5
+1 3
+3 6
+7
+CVal 1 0 5
+CVal 1 1 3
+CColor 1 0 1
+CVal 2 0 5
+CVal 3 0 3
+QMax 5 6
+QLen 5 6
+\end{verbatim}
+\subsection{样例输出}
+\begin{verbatim}
+17
+9
+\end{verbatim}
+\subsection{数据范围}
+$n,Q \le 50000,val \le 1000$
+
+对于$40\%$的数据，没有$1,5$号操作，$n,Q \le 1000$
+
+对于$80\%$的数据，没有$5$号操作
+\subsection{时空限制}
+时间限制：$2s$
+
+空间限制：$512MB$
+\end{document}
