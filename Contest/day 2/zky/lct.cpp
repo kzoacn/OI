@@ -150,8 +150,6 @@ int Q(int u,int v){
 	return y->I.pans;
 }
 int main(){
-	freopen("lct.in","r",stdin);
-	freopen("lct.out","w",stdout);
 	n=in();
 	for(int i=1;i<=n;i++)nd[i].val=val[i]=in(),nd[i].rz();
 	for(int i=1;i<n;i++){
@@ -161,7 +159,6 @@ int main(){
 		link(u,v);
 	}
 	m=in();
-	if(n<=2000&&m<=2000)return BF::solve();	
 	int la=0;
 	while(m--){
 		int ty=in();
