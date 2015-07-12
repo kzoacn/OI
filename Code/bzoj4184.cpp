@@ -2,27 +2,22 @@
 using namespace std;
 const int maxn=500001;
 struct LB{
-	int lb[32],siz;
-	LB(){memset(lb,0,sizeof lb);siz=0;}
+	int lb[32];
+	LB(){memset(lb,0,sizeof lb);}
 	void insert(int x){
-		if(full())return;
 		for(int i=31;i>=0;i--)if(x>>i&1){
 			if(lb[i])x^=lb[i];
 			else{
 				lb[i]=x;
-				siz++;
 				break;
 			}
 		}	
 	}
 	int Qmax(){
 		int ans=0;
-		for(int i=31;i>=0;i--)
+		for(int i=31;i>=0;i--)if(lb[i])
 			ans=max(ans,ans^lb[i]);
 		return ans;
-	}
-	bool full(){
-		return siz==31;
 	}
 };
 LB operator+(LB A,const LB &B){
@@ -38,43 +33,59 @@ int in(){
 }
 int n;
 int a[maxn];
-LB lb[maxn];
-int del[maxn];
-vector<int> solve(int l,int r){
+struct node{
+	LB lb;
+}t[maxn*2];
+int tot=0;
+#define ls x+1
+#define rs x+r-l+2-((r^l)&1)
+void Add(int x,int l,int r,int l0,int r0,int y){
+	if(l0<=l&&r0>=r){t[x].lb.insert(y);return;}
+	int mid=(l+r)>>1;
+	if(l0<=mid)Add(ls,l,mid,l0,r0,y);
+	if(r0>mid)Add(rs,mid+1,r,l0,r0,y);
+}
+void push(int x,int l,int r){
 	if(l==r){
-		vector<int>vec;
-		if(a[l]>0)vec.push_back(a[l]);
-		return vec;
+		//anss[l]=t[x].lb.Qmax();
+		printf("%d\n",t[x].lb.Qmax());
+		return;
 	}
 	int mid=(l+r)>>1;
-	vector<int>ins=solve(l,mid);
-	for(int i=mid+1;i<=r;i++)if(a[i]<0)
-		del[++del[0]]=-a[i];
-	sort(del+1,del+1+del[0]);
-	LB ba;int cur=1;
-	vector<int>rem;
-	for(int i=0;i<ins.size();i++){
-		if(ins[i]==del[cur])cur++;
-		else{
-			ba.insert(ins[i]);
-			rem.push_back(ins[i]);
-		}
-	}
-	for(int i=r;i>=mid+1;i--){
-		lb[i]=lb[i]+ba;
-		if(a[i]<0)ba.insert(-a[i]);
-	}
-	ins=solve(mid+1,r);
-	for(int i=0;i<ins.size();i++)rem.push_back(ins[i]);
-	sort(rem.begin(),rem.end());
-	return rem;
+	t[ls].lb=t[ls].lb+t[x].lb;
+	t[rs].lb=t[rs].lb+t[x].lb;
+	push(ls,l,mid);
+	push(rs,mid+1,r);
 }
+
 int main(){
+	cerr<<sizeof(t)/1024.0/1024.0<<endl;
 	freopen("bzoj4184.in","r",stdin);
 	n=in();
 	for(int i=1;i<=n;i++)a[i]=in();
-	solve(1,n);
-	for(int i=1;i<=n;i++)
-		printf("%d\n",lb[i].Qmax());
+	
+	
+//	build(1,n);
+	
+	multimap<int,int>M;
+	for(int i=1;i<=n;i++){
+		if(a[i]>0){
+			M.insert(make_pair(a[i],i));
+		}else{
+			multimap<int,int>::iterator it;
+			it=M.find(-a[i]);
+			Add(1,1,n,it->second,i-1,-a[i]);
+			M.erase(it);
+		}
+	}
+	
+	while(!M.empty()){
+		multimap<int,int>::iterator it;
+		it=M.begin();
+		Add(1,1,n,it->second,n,it->first);		
+		M.erase(it);
+	}
+	
+	push(1,1,n);
 	return 0;
 }
