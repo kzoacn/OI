@@ -16,12 +16,15 @@ LL pw(LL x,LL k,LL p){
 int main(){
 	cin>>n>>k;
 	fac[0]=inv[1]=inv[0]=two[0]=1;
-	for(int i=1;i<=n;i++)fac[i]=fac[i-1]*i&M;
+	for(int i=1;i<=n;i++)fac[i]=fac[i-1]*i%M;
 	for(int i=2;i<=n;i++)inv[i]=(M-M/i)*inv[M%i]%M;
 	for(int i=1;i<=n;i++)inv[i]=inv[i]*inv[i-1]%M;
-	LL ans=1;
-	for(int i=1;i<=n-k;i++)
-		ans=(ans+C(n-k,i)*pw(2,i-1,M)%M)%M;
-	cout<<(ans*C(n,k)+M)%M<<endl;
+	LL ans=0;int cur=0;
+	for(int i=k;i<=n;i++){
+		cur^=1;
+		LL res=C(n,i)*C(i,k)%M*(pw(2,pw(2,n-i,M-1),M)+M-1)%M;
+		ans+=(cur?1:-1)*res;
+		ans=(ans+M)%M;
+	}cout<<(ans+M)%M<<endl;
 	return 0;
 }
